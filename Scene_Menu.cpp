@@ -17,6 +17,8 @@ void Scene_Menu::initialize()
 	register_action(sf::Keyboard::W, "UP");
 	register_action(sf::Keyboard::S, "DOWN");
 	register_action(sf::Keyboard::D, "PLAY");
+	register_action(sf::Keyboard::Up, "UP");
+	register_action(sf::Keyboard::Down, "DOWN");
 	register_action(sf::Keyboard::Escape, "QUIT");
 
 	m_title= "Mega Plumber Man";
@@ -81,7 +83,7 @@ void Scene_Menu::s_render()
 	for (int i= 0; i < m_menu_strings.size(); i++)
 	{
 		m_menu_text.setString(m_menu_strings[i]);
-		m_menu_text.setPosition(5, m_menu_text.getPosition().y + 80);
+		m_menu_text.setPosition(5, m_menu_text.getPosition().y + 150);
 
 		if (i == m_menu_index)
 		{

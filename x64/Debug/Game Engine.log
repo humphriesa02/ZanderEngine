@@ -1,4 +1,7 @@
-﻿  Game_Engine.cpp
-  Main.cpp
-  Generating Code...
-  Game Engine.vcxproj -> C:\GLP\Game Engine\x64\Debug\Game Engine.exe
+﻿  Scene_Play.cpp
+C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\Scene_Play.cpp(81,63): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\Scene_Play.cpp(81,55): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\Scene_Play.cpp(91,63): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\Scene_Play.cpp(91,55): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\Scene_Play.cpp(332,44): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+  Game Engine.vcxproj -> C:\Users\Alex\Desktop\RepoOfRepos\GameEngine\ZanderEngine\x64\Debug\Game Engine.exe

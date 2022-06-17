@@ -1,7 +1,7 @@
 Tile Ground  0 0
 Tile Ground  1 0
 Tile Ground  2 0
-Dec BushBig  0 1
+Dec  Bush    0 1
 Tile Ground  3 0
 Tile Ground  4 0
 Tile Ground  5 0
@@ -54,7 +54,7 @@ Tile Ground 31 0
 Dec CloudBig 31 5
 Tile Ground 32 0
 Tile Ground 33 0
-Dec BushBig 33 1
+Dec  Bush   33 1
 Tile Ground 34 0
 Tile Ground 35 0
 Tile Ground 36 0

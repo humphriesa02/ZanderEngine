@@ -10,6 +10,7 @@
 #include <sstream>
 #include <algorithm>
 #include <time.h>
+#include <cstdlib>
 
 #include "Vec2.h"
 

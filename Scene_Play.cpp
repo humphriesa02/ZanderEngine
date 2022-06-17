@@ -15,6 +15,7 @@ Scene_Play::Scene_Play(Game_Engine *game_engine, const std::string &level_path)
 
 void Scene_Play::initialize(const std::string &level_path)
 {
+	register_action(sf::Keyboard::H, "CONSOLE");
 	register_action(sf::Keyboard::P, "PAUSE");
 	register_action(sf::Keyboard::Escape, "QUIT");
 	register_action(sf::Keyboard::T, "TOGGLE_TEXTURE");		// Toggle drawing (T)extures
@@ -39,8 +40,17 @@ c_Vec2 Scene_Play::grid_to_mid_pixel(float gridX, float gridY, std::shared_ptr<E
 	//		 You must use the Entity's Animation size to position it correctly
 	//		 The size of the grid widht and height is stored in m_grid_size.x and m_grid_size.y
 	//		 The bottom-left corner of the Animation should align with the bottom left of the grid cell
+	auto& entityAnimation = entity->get_component<c_Animation>();
 
-	return c_Vec2(0, 0);
+	// Our grid is built of m_grid_size.x by m_grid_size.y blocks
+	// we need to specify how big our entity needs to be drawn, and then its position
+
+	float relativeX = gridX * m_grid_size.x;
+	float relativeY = abs((gridY - 11) * m_grid_size.y);
+	printf("RELATIVE X: %f", relativeX);
+	printf("RELATIVE Y: %f", relativeY);
+
+	return c_Vec2(relativeX + (entityAnimation.animation.get_size().x/2), relativeY + (entityAnimation.animation.get_size().y/2));
 }
 
 void Scene_Play::load_level(const std::string &file_name)
@@ -51,6 +61,40 @@ void Scene_Play::load_level(const std::string &file_name)
 	// TODO: read in the level file and add the appropriate entities
 	//		 use the PlayerConfig struct m_player_config to store player properties
 	//		 this struct is defined at the top of Scene_Play.h
+
+	std::ifstream file(file_name);
+	std::string element;
+	while (file >> element)
+	{
+
+		if (element == "Player")
+		{
+			file >> m_player_config.X >> m_player_config.Y >> m_player_config.CX >> m_player_config.CY >> m_player_config.SPEED >> m_player_config.JUMP >> m_player_config.MAXSPEED >> m_player_config.GRAVITY >> m_player_config.WEAPON;
+		}
+		else if (element == "Tile")
+		{
+			std::string animationName;
+			size_t grid_x, grid_y;
+			file >> animationName >> grid_x >> grid_y;
+			auto tile = m_entity_manager.add_entity(e_Tag::Tile);
+			tile->add_component<c_Animation>(m_game->assets().get_animation(animationName), true);
+			tile->add_component<c_Transform>(grid_to_mid_pixel(grid_x, grid_y, tile));
+			tile->add_component<c_Bounding_box>(m_game->assets().get_animation(animationName).get_size());
+		}
+		else if (element == "Dec")
+		{
+			std::string animationName;
+			size_t grid_x, grid_y;
+			file >> animationName >> grid_x >> grid_y;
+			auto tile = m_entity_manager.add_entity(e_Tag::Tile);
+			tile->add_component<c_Animation>(m_game->assets().get_animation(animationName), true);
+			tile->add_component<c_Transform>(grid_to_mid_pixel(grid_x, grid_y, tile));
+		}
+		else
+		{
+			std::cerr << "Unknown Asset Type: " << element << std::endl;
+		}
+	}
 
 	// NOTE: all of the code below is sample code which shows you how to
 	//		 set up and use entities with the new syntax, it should be removed
@@ -99,8 +143,8 @@ void Scene_Play::spawn_player()
 	// here is a sample player entity which you can use to construct other entities
 	m_player= m_entity_manager.add_entity(e_Tag::Player);
 	m_player->add_component<c_Animation>(m_game->assets().get_animation("Stand"), true);
-	m_player->add_component<c_Transform>(c_Vec2(224, 352));
-	m_player->add_component<c_Bounding_box>(c_Vec2(48, 48));
+	m_player->add_component<c_Transform>(grid_to_mid_pixel(m_player_config.X, m_player_config.Y, m_player));
+	m_player->add_component<c_Bounding_box>(c_Vec2(m_player_config.CX, m_player_config.CY));
 
 	// TODO: be sure to add the remaining components to the player
 }
@@ -179,6 +223,7 @@ void Scene_Play::s_do_action(const Action &action)
 		else if (action.name() == "TOGGLE_GRID")		{ m_draw_grid= !m_draw_grid; }
 		else if (action.name() == "PAUSE")				{ set_paused(); }
 		else if (action.name() == "QUIT")				{ on_end(); }
+		else if (action.name() == "CONSOLE")			{ std::cout << "Hello, World!\n"; }
 		else if (action.name() == "RIGHT")				{ m_player->get_component<c_Input>().right= true; }
 		else if (action.name() == "LEFT")				{ m_player->get_component<c_Input>().left= true; }
 		else if (action.name() == "UP")					{ m_player->get_component<c_Input>().up= true; }
